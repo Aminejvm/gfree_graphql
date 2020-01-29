@@ -1,4 +1,3 @@
-# next-starter
-using create-next-app
-xstyled,atomic-layout
-eslint
+Stack 
+appolo server
+prisma

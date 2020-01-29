@@ -1,0 +1,76 @@
+type User @db(name: "users"){
+  id: ID! @id
+  email: String! @unique
+  name: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  title: String
+  about: String
+  profilepicture: String
+  createdAt:  DateTime! @createdAt
+  updatedAt:  DateTime! @updatedAt
+  stories: [Story!] @relation(link: INLINE)
+  recipes: [Recipe!] @relation(link: INLINE)
+  likesStory: [UserLikedStory!]
+  likesRecipe: [UserLikedRecipe!]
+  permissions: [Permission]
+}
+
+type Story @db(name: "stories"){
+  id: ID! @id
+  body: String!
+  writtenBy: User!
+  likedby: [LikeStory!]
+  comments: [Comment!]
+  createdAt:  DateTime! @createdAt
+  updatedAt:  DateTime! @updatedAt
+  thumbnail: String!
+  readtime: Float!
+  description: String!
+}
+
+type Recipe @db(name: "recipes") {
+  id: ID! @id
+  body: String!
+  writtenBy: User!
+  likedby: [LikeStory!]
+  comments: [Comment!]
+  createdAt:  DateTime! @createdAt
+  updatedAt:  DateTime! @updatedAt
+  thumbnail: String!
+  cookingtime: Float!
+}
+
+type LikeStory @embedded{
+  user: User!
+  likes: Int!
+}
+
+type LikeRecipe @embedded{
+  user: User!
+  likes: Int!
+}
+
+type UserLikedStory @embedded{
+  story: Story!
+  likes: Int!
+}
+
+type UserLikedRecipe @embedded {
+  recipe: Recipe!
+  likes: Int!
+}
+
+type Comment @embedded{
+  user: User!
+  body: String!
+}
+enum Permission {
+  ADMIN
+  USER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
